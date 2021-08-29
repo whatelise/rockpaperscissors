@@ -13,17 +13,17 @@ function start() {
 function getPlayerChoice() {
   console.log("getPlayerChoice");
   document.querySelector(".rock").addEventListener("click", function () {
-    let playerChoice = "rock";
+    playerChoice = "rock";
     console.log("player chooses " + playerChoice);
     getComputerChoice();
   });
   document.querySelector(".paper").addEventListener("click", function () {
-    let playerChoice = "paper";
+    playerChoice = "paper";
     console.log("player chooses " + playerChoice);
     getComputerChoice();
   });
   document.querySelector(".scissors").addEventListener("click", function () {
-    let playerChoice = "scissors";
+    playerChoice = "scissors";
     console.log("player chooses " + playerChoice);
     getComputerChoice();
   });
@@ -34,6 +34,9 @@ function getComputerChoice() {
   let random = Math.floor(Math.random() * threeOptions.length);
   console.log("computer chooses: " + (random, threeOptions[random]));
   computerChoice = (random, threeOptions[random]);
+  document.querySelector("#win").classList.add("hidden");
+  document.querySelector("#lose").classList.add("hidden");
+  document.querySelector("#draw").classList.add("hidden");
   showAnimations();
 }
 
@@ -41,74 +44,79 @@ function showAnimations() {
   console.log("showAnimations");
   document.querySelector("#player1").classList.add("shake");
   document.querySelector("#player2").classList.add("shake");
+  document.querySelector("#player1").addEventListener("animationend", removeShake);
+  document.querySelector("#player2").addEventListener("animationend", removeShake);
+}
+
+function removeShake() {
+  document.querySelector("#player1").classList.remove("shake");
+  document.querySelector("#player2").classList.remove("shake");
 
   if (playerChoice === "rock") {
-    document.querySelector("#player1").classList.add("rock");
+    document.querySelector("#player1").classList.add(playerChoice);
     console.log("player rock is shown");
-  }
-  if (playerChoice === "paper") {
-    document.querySelector("#player1").classList.add("paper");
+  } else if (playerChoice === "paper") {
+    document.querySelector("#player1").classList.add(playerChoice);
     console.log("player paper is shown");
-  }
-  if (playerChoice === "scissors") {
-    document.querySelector("#player1").classList.add("scissors");
+  } else if (playerChoice === "scissors") {
+    document.querySelector("#player1").classList.add(playerChoice);
     console.log("player scissors are shown");
   }
   if (computerChoice === "rock") {
-    document.querySelector("#player2").classList.add("rock");
+    document.querySelector("#player2").classList.add(computerChoice);
     console.log("comp rock is shown");
-  }
-  if (computerChoice === "paper") {
-    document.querySelector("#player2").classList.add("paper");
+  } else if (computerChoice === "paper") {
+    document.querySelector("#player2").classList.add(computerChoice);
     console.log("comp paper is shown");
-  }
-  if (computerChoice === "scissors") {
-    document.querySelector("#player2").classList.add("scissors");
+  } else if (computerChoice === "scissors") {
+    document.querySelector("#player2").classList.add(computerChoice);
     console.log("comp scissors are shown");
   }
-
   determineWinner();
 }
 
 function determineWinner() {
   console.log("determineWinner");
-  if (playerChoice === computerChoice) {
-    showDraw();
-    console.log("tie");
-  }
+
   //user wins
-  else if (computerChoice === "rock" && playerChoice === "paper") {
+  if (computerChoice === "rock" && playerChoice === "paper") {
     winner === "user";
+    showWin();
     console.log("user wins");
   } else if (computerChoice === "scissors" && playerChoice === "rock") {
     winner === "user";
+    showWin();
     console.log("user wins");
   } else if (computerChoice === "paper" && playerChoice === "scissors") {
     winner === "user";
+    showWin();
     console.log("user wins");
   }
 
   //computer wins
   else if (computerChoice === "paper" && playerChoice === "rock") {
+    showLose();
     console.log("computer wins");
   } else if (computerChoice === "rock" && playerChoice === "scissors") {
+    showLose();
     console.log("computer wins");
   } else if (computerChoice === "scissors" && playerChoice === "paper") {
-    console.log("computer wins");
-  }
-  //then show the winner
-  if (winner === "computer") {
     showLose();
-  } else if (winner === "user") {
-    showWin();
+    console.log("computer wins");
+  } else if (playerChoice === computerChoice) {
+    showDraw();
+    console.log("tie");
   }
 }
 function showWin() {
-  console.log("winpoint");
+  console.log("winPoint");
+  document.querySelector("#win").classList.remove("hidden");
 }
 function showLose() {
+  document.querySelector("#lose").classList.remove("hidden");
   console.log("losePoint");
 }
 function showDraw() {
+  document.querySelector("#draw").classList.remove("hidden");
   console.log("drawPoint");
 }
